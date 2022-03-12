@@ -1,0 +1,44 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:guestay/auth/auth_repository.dart';
+import 'package:guestay/auth/form_submission_status.dart';
+
+import 'login_event.dart';
+import 'login_state.dart';
+
+class LoginBloc extends Bloc<LoginEvent, LoginState> {
+  final AuthRepository authRepository;
+  LoginBloc({required this.authRepository}) : super(LoginState()) {
+    on<LoginUsernameChanged>(
+        (event, emit) => emit(state.copyWith(userEmail: event.userEmail)));
+    on<LoginPasswordChanged>(
+        (event, emit) => emit(state.copyWith(password: event.password)));
+    on<LoginSubmitted>((event, emit) async {
+      emit(state.copyWith(formSubmissionStatus: FormSubmitting()));
+      try {
+        await authRepository.login();
+        emit(state.copyWith(formSubmissionStatus: SubmissionSuccess()));
+      } on Exception catch (_, e) {
+        emit(state.copyWith(
+            formSubmissionStatus: SubmissionFailed(exception: _)));
+      }
+    });
+  }
+
+  // @override
+  // Stream<LoginState> mapEventToState(LoginEvent event) async* {
+  //   if (event is LoginUsernameChanged) {
+  //     yield state.copyWith(userEmail: event.userEmail);
+  //   } else if (event is LoginPasswordChanged) {
+  //     yield state.copyWith(password: event.password);
+  //   } else if (event is LoginSubmitted) {
+  //     yield state.copyWith(formSubmissionStatus: FormSubmitting());
+  //     try {
+  //       await authRepository.login();
+  //       yield state.copyWith(formSubmissionStatus: SubmissionSuccess());
+  //     } on Exception catch (_, e) {
+  //       yield state.copyWith(
+  //           formSubmissionStatus: SubmissionFailed(exception: _));
+  //     }
+  //   }
+  // }
+}
