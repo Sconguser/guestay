@@ -1,23 +1,29 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:guestay/auth/auth_credentials.dart';
 import 'package:guestay/auth/auth_repository.dart';
 import 'package:guestay/auth/form_submission_status.dart';
 
+import '../auth_cubit.dart';
+import '../user.dart';
 import 'login_event.dart';
 import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository authRepository;
-  LoginBloc({required this.authRepository}) : super(LoginState()) {
-    on<LoginUsernameChanged>(
+  final AuthCubit authCubit;
+  LoginBloc({required this.authRepository, required this.authCubit})
+      : super(LoginState()) {
+    on<LoginUserEmailChanged>(
         (event, emit) => emit(state.copyWith(userEmail: event.userEmail)));
     on<LoginPasswordChanged>(
         (event, emit) => emit(state.copyWith(password: event.password)));
     on<LoginSubmitted>((event, emit) async {
       emit(state.copyWith(formSubmissionStatus: FormSubmitting()));
       try {
-        await authRepository.login(
-            email: state.userEmail!, password: state.password!);
+        User user = await authRepository.login(
+            email: state.userEmail, password: state.password);
         emit(state.copyWith(formSubmissionStatus: SubmissionSuccess()));
+        authCubit.launchSession(AuthCredentials(user: user));
       } on Exception catch (_, e) {
         emit(state.copyWith(
             formSubmissionStatus: SubmissionFailed(exception: _)));

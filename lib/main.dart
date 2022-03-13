@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:guestay/auth/auth_repository.dart';
+import 'package:guestay/session_cubit.dart';
 
-import 'auth/login/views/login_view.dart';
+import 'app_navigator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,11 @@ class MyApp extends StatelessWidget {
       ),
       home: RepositoryProvider(
         create: (context) => AuthRepository(),
-        child: LoginView(),
+        child: BlocProvider(
+          create: (context) =>
+              SessionCubit(authRepository: context.read<AuthRepository>()),
+          child: AppNavigator(),
+        ),
       ),
     );
   }

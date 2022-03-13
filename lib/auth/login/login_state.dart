@@ -1,15 +1,17 @@
 import 'package:guestay/auth/form_submission_status.dart';
+import 'package:guestay/auth/utils/validators.dart';
 
 class LoginState {
-  final String? userEmail;
-  bool get isValidUsername => userEmail != null && userEmail!.length > 6;
-  final String? password;
-  bool get isValidPassword => password != null && password!.length > 6;
+  final String userEmail;
+  // bool get isValidUsername => userEmail.length > 6 && userEmail.contains('@');
+  bool get isValidUserEmail => userEmailValidate(userEmail);
+  final String password;
+  bool get isValidPassword => userPasswordValidate(password);
   final FormSubmissionStatus? formSubmissionStatus;
 
   LoginState({
-    this.userEmail,
-    this.password,
+    this.userEmail = '',
+    this.password = '',
     this.formSubmissionStatus = const InitialFormStatus(),
   });
 

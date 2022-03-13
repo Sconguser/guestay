@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:guestay/auth/auth_credentials.dart';
 import 'package:guestay/auth/auth_repository.dart';
 import 'package:guestay/auth/form_submission_status.dart';
 import 'package:guestay/auth/login/login_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../auth_cubit.dart';
 import '../login_bloc.dart';
 import '../login_state.dart';
 
@@ -17,9 +19,12 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) =>
-            LoginBloc(authRepository: context.read<AuthRepository>()),
-        child: _loginForm(),
+        create: (context) => LoginBloc(
+            authRepository: context.read<AuthRepository>(),
+            authCubit: context.read<AuthCubit>()),
+        child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [_loginForm(), _signUpButton(context)]),
       ),
     );
   }
@@ -38,20 +43,24 @@ class LoginView extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 40),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [_userNameField(), _passwordField(), _loginButton()],
+                children: [
+                  _userEmailField(),
+                  _passwordField(),
+                  _loginButton(),
+                ],
               )),
         ));
   }
 
-  Widget _userNameField() {
+  Widget _userEmailField() {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       return TextFormField(
         decoration:
             const InputDecoration(icon: Icon(Icons.person), hintText: 'Email'),
-        validator: (value) => state.isValidUsername ? null : incorrectEmail,
+        validator: (value) => state.isValidUserEmail ? null : incorrectEmail,
         onChanged: (value) => context
             .read<LoginBloc>()
-            .add(LoginUsernameChanged(userEmail: value)),
+            .add(LoginUserEmailChanged(userEmail: value)),
       );
     });
   }
@@ -85,6 +94,18 @@ class LoginView extends StatelessWidget {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       context.read<LoginBloc>().add(LoginSubmitted());
     }
+  }
+
+  Widget _signUpButton(BuildContext context) {
+    return SafeArea(
+        child: TextButton(
+      child: Text('Sign up'),
+      onPressed: () => context
+          .read<AuthCubit>()
+          .showSignUp(user: context.read<AuthRepository>().user),
+
+      /// smelly
+    ));
   }
 
   void _showSnackBar(BuildContext context, String message) {
