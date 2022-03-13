@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:guestay/auth/auth_repository.dart';
 import 'package:guestay/auth/form_submission_status.dart';
 import 'package:guestay/auth/login/login_event.dart';
-import 'package:guestay/auth/login/utils/validators.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../login_bloc.dart';
@@ -30,7 +29,7 @@ class LoginView extends StatelessWidget {
         listener: (context, state) {
           final formStatus = state.formSubmissionStatus;
           if (formStatus is SubmissionFailed) {
-            _showSnackBar(context, 'Failed to log in');
+            _showSnackBar(context, formStatus.exception.toString());
           }
         },
         child: Form(
@@ -89,7 +88,7 @@ class LoginView extends StatelessWidget {
   }
 
   void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text('Message'));
+    final snackBar = SnackBar(content: Text(message));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
