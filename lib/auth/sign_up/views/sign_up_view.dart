@@ -42,7 +42,7 @@ class SignUpView extends StatelessWidget {
         child: Form(
           key: _formKey,
           child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -139,12 +139,12 @@ class SignUpView extends StatelessWidget {
   Widget _signUpButton() {
     return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
       return state.formSubmissionStatus is FormSubmitting
-          ? CircularProgressIndicator()
+          ? const CircularProgressIndicator()
           : ElevatedButton(
               onPressed: () {
                 _signUpButtonPressed(context);
               },
-              child: Text('Sign Up!'));
+              child: const Text('Sign Up!'));
     });
   }
 
@@ -165,6 +165,6 @@ class SignUpView extends StatelessWidget {
             onPressed: () => context
                 .read<AuthCubit>()
                 .showLogin(user: context.read<AuthRepository>().user),
-            child: Text('Already have an account? Sign in.')));
+            child: const Text('Already have an account? Sign in.')));
   }
 }

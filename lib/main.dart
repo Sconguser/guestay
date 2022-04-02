@@ -5,6 +5,8 @@ import 'package:guestay/session_cubit.dart';
 
 import 'app_navigator.dart';
 
+import 'shared/constants/decorations.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -16,15 +18,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Guestay',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: mainThemeData,
       home: RepositoryProvider(
         create: (context) => AuthRepository(),
         child: BlocProvider(
           create: (context) =>
               SessionCubit(authRepository: context.read<AuthRepository>()),
-          child: AppNavigator(),
+          child: const AppNavigator(),
         ),
       ),
     );
