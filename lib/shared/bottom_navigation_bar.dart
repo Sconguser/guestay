@@ -6,14 +6,14 @@ BottomNavigationBar defaultBottomNavigationBar = BottomNavigationBar(
   items: const [
     BottomNavigationBarItem(
       icon: Icon(Icons.home),
-      label: 'home',
+      label: 'Home',
     ),
-    BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'favorite'),
-    BottomNavigationBarItem(icon: Icon(Icons.card_travel), label: 'booking'),
+    BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorite'),
+    BottomNavigationBarItem(icon: Icon(Icons.card_travel), label: 'Booking'),
     BottomNavigationBarItem(
-        icon: Icon(Icons.local_offer_outlined), label: 'coupons'),
+        icon: Icon(Icons.local_offer_outlined), label: 'Coupons'),
     BottomNavigationBarItem(
-        icon: Icon(Icons.person_outlined), label: 'profile'),
+        icon: Icon(Icons.person_outlined), label: 'Profile'),
   ],
 );
 
