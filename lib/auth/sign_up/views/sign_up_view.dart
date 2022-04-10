@@ -3,6 +3,9 @@ import 'package:guestay/auth/auth_credentials.dart';
 import 'package:guestay/auth/auth_repository.dart';
 import 'package:guestay/auth/form_submission_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:guestay/shared/constants/background.dart';
+import 'package:guestay/shared/constants/colours.dart';
+import 'package:guestay/shared/divider.dart';
 
 import '../../auth_cubit.dart';
 import '../sign_up_bloc.dart';
@@ -24,9 +27,20 @@ class SignUpView extends StatelessWidget {
         create: (context) => SignUpBloc(
             authRepository: context.read<AuthRepository>(),
             authCubit: context.read<AuthCubit>()),
-        child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [_signUpForm(), _loginButton(context)]),
+        child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: loginBackGroundDecoration,
+            child: Column(children: [
+              SizedBox(height: 40),
+              _signUpForm(),
+              SizedBox(height: 10),
+              _signUpButton(),
+              SizedBox(height: 2),
+              Text(
+                  'By signing in, I agree with Terms of Use and Privacy Policy',
+                  style: TextStyle(fontSize: 9)),
+              _loginButton(context)
+            ])),
       ),
     );
   }
@@ -39,22 +53,34 @@ class SignUpView extends StatelessWidget {
             _showSnackBar(context, formStatus.exception.toString());
           }
         },
-        child: Form(
-          key: _formKey,
-          child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _userUsernameField(),
-                  _userNameField(),
-                  _userLastNameField(),
-                  _userEmailField(),
-                  _userPasswordField(),
-                  _userPasswordConfirmationField(),
-                  _signUpButton(),
-                ],
-              )),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            color: whiteBackground,
+            child: Form(
+              key: _formKey,
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _userUsernameField(),
+                      textFieldDivider,
+                      _userNameField(),
+                      textFieldDivider,
+                      _userLastNameField(),
+                      textFieldDivider,
+                      _userEmailField(),
+                      textFieldDivider,
+                      _userPasswordField(),
+                      textFieldDivider,
+                      _userPasswordConfirmationField(),
+                      SizedBox(height: 12),
+                      // _signUpButton(),
+                    ],
+                  )),
+            ),
+          ),
         ));
   }
 
@@ -62,7 +88,9 @@ class SignUpView extends StatelessWidget {
     return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
       return TextFormField(
         decoration: const InputDecoration(
-            icon: Icon(Icons.person), hintText: 'Username'),
+            border: InputBorder.none,
+            hintText: 'Username',
+            hintStyle: TextStyle(fontWeight: FontWeight.bold)),
         validator: (value) => state.isValidUsername ? null : incorrectUsername,
         onChanged: (value) => context
             .read<SignUpBloc>()
@@ -74,8 +102,10 @@ class SignUpView extends StatelessWidget {
   Widget _userNameField() {
     return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
       return TextFormField(
-        decoration:
-            const InputDecoration(icon: Icon(Icons.person), hintText: 'Name'),
+        decoration: const InputDecoration(
+            border: InputBorder.none,
+            hintText: 'Name',
+            hintStyle: TextStyle(fontWeight: FontWeight.bold)),
         validator: (value) => state.isValidUserEmail ? null : incorrectEmail,
         onChanged: (value) =>
             context.read<SignUpBloc>().add(SignUpNameChanged(userName: value)),
@@ -87,7 +117,9 @@ class SignUpView extends StatelessWidget {
     return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
       return TextFormField(
         decoration: const InputDecoration(
-            icon: Icon(Icons.person), hintText: 'Last name'),
+            border: InputBorder.none,
+            hintText: 'Last name',
+            hintStyle: TextStyle(fontWeight: FontWeight.bold)),
         onChanged: (value) => context
             .read<SignUpBloc>()
             .add(SignUpLastNameChanged(userLastName: value)),
@@ -98,8 +130,10 @@ class SignUpView extends StatelessWidget {
   Widget _userEmailField() {
     return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
       return TextFormField(
-        decoration:
-            const InputDecoration(icon: Icon(Icons.person), hintText: 'Email'),
+        decoration: const InputDecoration(
+            border: InputBorder.none,
+            hintText: 'Email',
+            hintStyle: TextStyle(fontWeight: FontWeight.bold)),
         onChanged: (value) => context
             .read<SignUpBloc>()
             .add(SignUpEmaiLChanged(userEmail: value)),
@@ -112,7 +146,9 @@ class SignUpView extends StatelessWidget {
       return TextFormField(
         obscureText: true,
         decoration: const InputDecoration(
-            icon: Icon(Icons.security), hintText: 'Password'),
+            border: InputBorder.none,
+            hintText: 'Password',
+            hintStyle: TextStyle(fontWeight: FontWeight.bold)),
         validator: (value) => state.isValidPassword ? null : incorrectPassword,
         onChanged: (value) => context
             .read<SignUpBloc>()
@@ -126,7 +162,9 @@ class SignUpView extends StatelessWidget {
       return TextFormField(
         obscureText: true,
         decoration: const InputDecoration(
-            icon: Icon(Icons.security), hintText: 'Confirm password'),
+            border: InputBorder.none,
+            hintText: 'Confirm password',
+            hintStyle: TextStyle(fontWeight: FontWeight.bold)),
         validator: (value) => state.isValidPasswordConfirmation
             ? null
             : incorrectPasswordConfirmation,
@@ -140,11 +178,20 @@ class SignUpView extends StatelessWidget {
     return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
       return state.formSubmissionStatus is FormSubmitting
           ? const CircularProgressIndicator()
-          : ElevatedButton(
-              onPressed: () {
-                _signUpButtonPressed(context);
-              },
-              child: const Text('Sign Up!'));
+          : ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: SizedBox(
+                width: 400,
+                height: 50,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: primaryColor, elevation: 0),
+                    onPressed: () {
+                      _signUpButtonPressed(context);
+                    },
+                    child: const Text('Sign Up!')),
+              ),
+            );
     });
   }
 
@@ -160,11 +207,13 @@ class SignUpView extends StatelessWidget {
   }
 
   Widget _loginButton(BuildContext context) {
-    return SafeArea(
-        child: TextButton(
-            onPressed: () => context
-                .read<AuthCubit>()
-                .showLogin(user: context.read<AuthRepository>().user),
-            child: const Text('Already have an account? Sign in.')));
+    return TextButton(
+        onPressed: () => context
+            .read<AuthCubit>()
+            .showLogin(user: context.read<AuthRepository>().user),
+        child: const Text(
+          'Already have an account? Sign in.',
+          style: TextStyle(color: Colors.black),
+        ));
   }
 }

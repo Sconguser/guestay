@@ -13,7 +13,8 @@ const BoxDecoration backgroundDecoration = BoxDecoration(
     ],
   ),
 );
-
+const BoxDecoration loginBackGroundDecoration =
+    BoxDecoration(color: gradientSecondaryColorTest);
 const Color primaryColorTest = Color(0xFF33C9F9);
 const Color gradientPrimaryColorTest = Color(0xFF33C9F9);
 const Color gradientMiddleColorTest = Color(0xFF39C9F3);
