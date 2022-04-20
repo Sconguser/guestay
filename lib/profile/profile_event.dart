@@ -17,3 +17,5 @@ class ProfileDescriptionChanged extends ProfileEvent {
 }
 
 class SaveProfileChanges extends ProfileEvent {}
+
+class SignOut extends ProfileEvent {}

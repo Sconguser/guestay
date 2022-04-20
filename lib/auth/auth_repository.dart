@@ -74,6 +74,7 @@ class AuthRepository {
 
   User signOut() {
     // _user = User();
+
     return User();
   }
 }

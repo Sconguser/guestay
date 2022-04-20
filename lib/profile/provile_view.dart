@@ -4,6 +4,7 @@ import 'package:guestay/profile/profile_bloc.dart';
 import 'package:guestay/profile/profile_event.dart';
 import 'package:guestay/profile/profile_state.dart';
 
+import '../auth/auth_cubit.dart';
 import '../session_cubit.dart';
 
 class ProfileView extends StatelessWidget {
@@ -15,7 +16,8 @@ class ProfileView extends StatelessWidget {
     return BlocProvider(
         create: (context) => ProfileBloc(
             user: sessionCubit.selectedUser ?? sessionCubit.currentUser,
-            isCurrentUser: sessionCubit.isCurrentUserSelected),
+            isCurrentUser: sessionCubit.isCurrentUserSelected,
+            sessionCubit: sessionCubit),
         child: Scaffold(
             backgroundColor: Colors.blue,
             appBar: _appBar(),
@@ -31,7 +33,11 @@ class ProfileView extends StatelessWidget {
           title: Text('Profile view'),
           actions: [
             if (state.isCurrentUser)
-              IconButton(onPressed: () {}, icon: Icon(Icons.logout))
+              IconButton(
+                  onPressed: () {
+                    context.read<ProfileBloc>().add(SignOut());
+                  },
+                  icon: Icon(Icons.logout))
           ],
         );
       }),
