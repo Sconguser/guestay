@@ -5,6 +5,7 @@ import 'package:guestay/session_cubit.dart';
 import 'package:guestay/session_state.dart';
 import 'package:guestay/views/session_view.dart';
 import 'auth/auth_cubit.dart';
+import 'bottom_nav_view/bottom_nav_view.dart';
 import 'views/loading_view.dart';
 
 class AppNavigator extends StatelessWidget {
@@ -23,7 +24,7 @@ class AppNavigator extends StatelessWidget {
                   sessionCubit: context.read<SessionCubit>()), //// dziwne
               child: AuthNavigator(),
             )),
-          if (state is Authenticated) MaterialPage(child: SessionView())
+          if (state is Authenticated) MaterialPage(child: BottomNavView())
         ],
         onPopPage: (route, result) => route.didPop(result),
       );

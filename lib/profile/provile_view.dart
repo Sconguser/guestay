@@ -6,8 +6,8 @@ import 'package:guestay/profile/profile_state.dart';
 
 import '../session_cubit.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
+class ProfileView extends StatelessWidget {
+  const ProfileView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

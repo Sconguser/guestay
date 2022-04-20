@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:guestay/profile/profile_event.dart';
 import 'package:guestay/profile/profile_state.dart';
 
