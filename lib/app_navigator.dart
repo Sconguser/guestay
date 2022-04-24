@@ -5,7 +5,7 @@ import 'package:guestay/session_cubit.dart';
 import 'package:guestay/session_state.dart';
 import 'package:guestay/views/session_view.dart';
 import 'auth/auth_cubit.dart';
-import 'bottom_nav_view/bottom_nav_view.dart';
+import 'bottom_nav/bottom_nav_view.dart';
 import 'views/loading_view.dart';
 
 class AppNavigator extends StatelessWidget {

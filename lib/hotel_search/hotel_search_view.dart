@@ -31,6 +31,10 @@ class HotelSearchView extends StatelessWidget {
             _datePickerButton(context),
             SizedBox(height: 20),
             _guestsPickerButton(context),
+            SizedBox(height: 20),
+            _pickedDates(context),
+            SizedBox(height: 20),
+            _pickedGuests(context),
             SizedBox(height: 100),
             _debugButton(context)
           ],
@@ -87,9 +91,7 @@ class HotelSearchView extends StatelessWidget {
               _datePickerButtonPressed(context);
             },
             child: Text(
-              hotelSearchRepository.startDate != null
-                  ? hotelSearchRepository.startDate.toString()
-                  : 'Check-In and Check-out',
+              'Check-In and Check-out',
               style: TextStyle(color: Colors.black),
             )),
       ),
@@ -97,7 +99,6 @@ class HotelSearchView extends StatelessWidget {
   }
 
   void _datePickerButtonPressed(BuildContext context) {
-    print('gowno');
     context.read<HotelSearchNavigatorCubit>().showDatePicker();
   }
 
@@ -147,5 +148,47 @@ class HotelSearchView extends StatelessWidget {
             )),
       ),
     );
+  }
+
+  Widget _pickedDates(BuildContext context) {
+    HotelSearchRepository hotelSearchRepository =
+        context.read<HotelSearchRepository>();
+    if (hotelSearchRepository.startDate != null) {
+      return Visibility(
+        visible: hotelSearchRepository.startDate != null,
+        child: Row(
+          children: [
+            Text(hotelSearchRepository.startDate!.day.toString()),
+            SizedBox(width: 10),
+            Text(hotelSearchRepository.endDate!.day.toString())
+          ],
+        ),
+      );
+    } else {
+      return SizedBox(height: 0);
+    }
+  }
+
+  Widget _pickedGuests(BuildContext context) {
+    HotelSearchRepository hotelSearchRepository =
+        context.read<HotelSearchRepository>();
+    if (hotelSearchRepository.adults != null &&
+        hotelSearchRepository.children != null &&
+        hotelSearchRepository.infants != null &&
+        hotelSearchRepository.pets != null) {
+      return Visibility(
+        visible: true,
+        child: Column(
+          children: [
+            Text('Adults: ${hotelSearchRepository.adults.toString()}'),
+            Text('Children: ${hotelSearchRepository.children.toString()}'),
+            Text('Infants: ${hotelSearchRepository.infants.toString()}'),
+            Text('Pets: ${hotelSearchRepository.pets.toString()}'),
+          ],
+        ),
+      );
+    } else {
+      return SizedBox(height: 1);
+    }
   }
 }

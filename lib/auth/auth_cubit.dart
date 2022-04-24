@@ -7,9 +7,11 @@ enum AuthState { login, signUp }
 
 class AuthCubit extends Cubit<AuthState> {
   final SessionCubit sessionCubit;
+
   AuthCubit({required this.sessionCubit}) : super(AuthState.login);
 
   AuthCredentials? credentials;
+
   void showLogin({required User user}) {
     credentials = AuthCredentials(user: user);
     emit(AuthState.login);
