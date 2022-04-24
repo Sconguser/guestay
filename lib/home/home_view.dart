@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:guestay/home/home_navigator_cubit.dart';
 import 'package:guestay/shared/bottom_navigation_bar.dart';
 import 'package:guestay/shared/appbar.dart';
 import 'package:guestay/shared/constants/background.dart';
 import 'package:guestay/shared/constants/colours.dart';
+
+import '../hotel_search/hotel_search_repository.dart';
 
 List<String> destinations = ['Greece', 'Iceland', 'Ireland', 'Italy', 'Morawy'];
 List<String> experiences = [
@@ -88,6 +92,9 @@ class HomeView extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('You chose ${destinations.elementAt(index)}'),
           ));
+          context.read<HotelSearchRepository>().destination =
+              destinations.elementAt(index);
+          context.read<HomeNavigatorCubit>().showHotelSearch();
         },
         child: Container(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
